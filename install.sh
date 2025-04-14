@@ -9,8 +9,7 @@ fi
 declare SRC_DIR
 SRC_DIR=$(cd "$(dirname "${0}")" && pwd)
 
-declare -r COLOR_VARIANTS=("standard" "amethyst" "beryl" "doder" "ruby" "jade" "black" "white")
-declare -r BRIGHT_VARIANTS=("" "dark")
+declare -r COLOR_VARIANTS=("standard" "doder" "ruby" "sun")
 
 function usage {
   printf "%s\n" "Usage: $0 [OPTIONS...] [COLOR VARIANTS...]"
@@ -21,13 +20,9 @@ function usage {
   printf "  %-25s%s\n" "-h" "Show this help"
   printf "\n%s\n" "COLOR VARIANTS:"
   printf "  %-25s%s\n" "standard" "Standard color folder version"
-  printf "  %-25s%s\n" "amethyst" "Purple color folder version"
-  printf "  %-25s%s\n" "beryl" "Teal color folder version"
   printf "  %-25s%s\n" "doder" "Blue color folder version"
   printf "  %-25s%s\n" "ruby" "Red color folder version"
-  printf "  %-25s%s\n" "jade" "Green color folder version"
-  printf "  %-25s%s\n" "black" "Black color folder version"
-  printf "  %-25s%s\n" "white" "White color folder version"
+  printf "  %-25s%s\n" "sun" "Sun color folder version"
   printf "\n  %s\n" "By default, only the standard one is selected."
 }
 
@@ -36,26 +31,14 @@ function install_theme {
     standard)
       local -r theme_color='#f4be70'
       ;;
-    amethyst)
-      local -r theme_color='#AB47BC'
-      ;;
-    beryl)
-      local -r theme_color='#2EB398'
-      ;;
-    black)
-      local -r theme_color='#686868'
-      ;;
     doder)
       local -r theme_color='#4285F4'
-      ;;
-    jade)
-      local -r theme_color='#86BE43'
       ;;
     ruby)
       local -r theme_color='#F0544C'
       ;;
-    white)
-      local -r theme_color='#AAAAAA'
+    sun)
+      local -r theme_color='#adbf04'
       ;;
   esac
 
@@ -89,37 +72,12 @@ function install_theme {
     if [[ -n "${colorprefix}" ]]; then
       install -m644 "${SRC_DIR}"/src/colors/color"${colorprefix}"/*.svg "${THEME_DIR}/scalable/places"
     fi
-  else
-    local -r STD_THEME_DIR="${THEME_DIR%-dark}"
-
-    install -d "${THEME_DIR}"/{16,22,24}
-
-    cp -r "${SRC_DIR}"/src/16/{actions,devices,places} "${THEME_DIR}/16"
-    cp -r "${SRC_DIR}"/src/22/{actions,devices,places} "${THEME_DIR}/22"
-    cp -r "${SRC_DIR}"/src/24/{actions,devices,places} "${THEME_DIR}/24"
 
     # Change icon color for dark theme
     sed -i "s/#565656/#aaaaaa/g" "${THEME_DIR}"/{16,22,24}/actions/*
     sed -i "s/#727272/#aaaaaa/g" "${THEME_DIR}"/{16,22,24}/{places,devices}/*
     sed -i "s/#5294e2/$theme_color/g" "${THEME_DIR}"/16/places/*
 
-    cp -r "${SRC_DIR}"/links/16/{actions,devices,places} "${THEME_DIR}/16"
-    cp -r "${SRC_DIR}"/links/22/{actions,devices,places} "${THEME_DIR}/22"
-    cp -r "${SRC_DIR}"/links/24/{actions,devices,places} "${THEME_DIR}/24"
-
-    # Link the common icons
-    ln -sr "${STD_THEME_DIR}/scalable" "${THEME_DIR}/scalable"
-    ln -sr "${STD_THEME_DIR}/symbolic" "${THEME_DIR}/symbolic"
-    ln -sr "${STD_THEME_DIR}/32" "${THEME_DIR}/32"
-    ln -sr "${STD_THEME_DIR}/16/mimetypes" "${THEME_DIR}/16/mimetypes"
-    ln -sr "${STD_THEME_DIR}/16/panel" "${THEME_DIR}/16/panel"
-    ln -sr "${STD_THEME_DIR}/16/status" "${THEME_DIR}/16/status"
-    ln -sr "${STD_THEME_DIR}/22/categories" "${THEME_DIR}/22/categories"
-    ln -sr "${STD_THEME_DIR}/22/emblems" "${THEME_DIR}/22/emblems"
-    ln -sr "${STD_THEME_DIR}/22/mimetypes" "${THEME_DIR}/22/mimetypes"
-    ln -sr "${STD_THEME_DIR}/22/panel" "${THEME_DIR}/22/panel"
-    ln -sr "${STD_THEME_DIR}/24/animations" "${THEME_DIR}/24/animations"
-    ln -sr "${STD_THEME_DIR}/24/panel" "${THEME_DIR}/24/panel"
   fi
 
   ln -sr "${THEME_DIR}/16" "${THEME_DIR}/16@2x"
@@ -133,7 +91,7 @@ function install_theme {
 }
 
 function clean_old_theme {
-  rm -rf "${DEST_DIR}"/Vimix{'-Amethyst','-Beryl','-Doder','-Ruby','-Jade','-Black','-White'}{'','-dark'}
+  rm -rf "${DEST_DIR}"/simple{'-doder','-ruby','-sun'}
 }
 
 while [[ $# -gt 0 ]]; do
@@ -161,16 +119,14 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-# Default name is 'Vimix'
-: "${NAME:=Vimix}"
+# Default name is ''
+: "${NAME:=simple}"
 
 clean_old_theme
 
 # By default, only the standard color variant is selected
 for color in "${colors[@]:-standard}"; do
-  for bright in "${BRIGHT_VARIANTS[@]}"; do
     install_theme "${color}" "${bright}"
-  done
 done
 
 # EOF
