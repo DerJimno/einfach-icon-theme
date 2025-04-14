@@ -1,4 +1,4 @@
------------------------- VIMIX ICON THEME ------------------------
+------------------------ SIMPLE ICON THEME ------------------------
 
 SOURCES:
 Snwh - paper icon theme: https://github.com/snwh/paper-icon-theme
@@ -7,4 +7,7 @@ PapirusDevelopmentTeam - papirus-icon-theme: https://github.com/PapirusDevelopme
 CUSTOMIZER:
 Vince Liuice <vinceliuice@hotmail.com> - vimix icon theme (https://github.com/vinceliuice/vimix-icon-theme)
 
------------------------- VIMIX ICON THEME ------------------------
+TWEAKER:
+Jimno <derJimno> - simple icon theme (https://github.com/DerJimno/simple-icon-theme)
+
+------------------------ SIMPLE ICON THEME ------------------------
