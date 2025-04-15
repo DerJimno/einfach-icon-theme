@@ -1,10 +1,10 @@
-## Vimix Icon Theme
+## Simple Icon Theme
 
 A Material Design icon theme
 
-Vimix icon theme is based on Paper-Icon-Theme: https://github.com/snwh/paper-icon-theme
+Fork of [Vimix icon theme](https://github.com/vinceliuice/Vimix-icon-theme), which is based on Paper-Icon-Theme: https://github.com/snwh/paper-icon-theme
 
-## Install Or Uninstall
+## Install
 ```
 Usage: ./install.sh [OPTIONS...] [COLOR VARIANTS...]
 
@@ -16,13 +16,9 @@ OPTIONS:
 
 COLOR VARIANTS:
   standard                 Standard color folder version
-  Amethyst                 Purple color folder version
-  Beryl                    Teal color folder version
   Doder                    Blue color folder version
   Ruby                     Red color folder version
-  Jade                     Green color folder version
-  Black                    Black color folder version
-  White                    White color folder version
+  Sun                      Yellow color folder version
 
   By default, only the standard one is selected.
 ```
