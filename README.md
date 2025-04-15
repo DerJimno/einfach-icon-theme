@@ -1,6 +1,6 @@
 ## Simple Icon Theme
 
-A Material Design icon theme
+A dark simple icon theme
 
 Fork of [Vimix icon theme](https://github.com/vinceliuice/Vimix-icon-theme), which is based on Paper-Icon-Theme: https://github.com/snwh/paper-icon-theme
 
@@ -22,6 +22,8 @@ COLOR VARIANTS:
 
   By default, only the standard one is selected.
 ```
+
+PS: I only include dark theme icons...
 
 ## Preview
 ![1](../master/Preview.png)
