@@ -25,4 +25,3 @@ COLOR VARIANTS:
 
 ## Preview
 ![1](../master/Preview.png)
-![2](../master/Preview01.png)
