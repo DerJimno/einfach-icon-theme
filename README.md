@@ -15,10 +15,10 @@ OPTIONS:
   -h                       Show this help
 
 COLOR VARIANTS:
-  standard                 Standard color folder version
-  Doder                    Blue color folder version
-  Ruby                     Red color folder version
-  Sun                      Yellow color folder version
+  simple                   Standard color folder version
+  doder                    Blue color folder version
+  ruby                     Red color folder version
+  sun                      Yellow color folder version
 
   By default, only the standard one is selected.
 ```
