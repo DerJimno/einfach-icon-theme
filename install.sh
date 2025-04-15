@@ -29,7 +29,7 @@ function usage {
 function install_theme {
   case "$1" in
     standard)
-      local -r theme_color='#f4be70'
+      local -r theme_color='#fc9867'
       ;;
     doder)
       local -r theme_color='#4285F4'
