@@ -17,7 +17,7 @@ OPTIONS:
   -h                       Show this help
 
 COLOR VARIANTS:
-  standard                 Einfach color folder version
+  standard                 Standard color folder version
   doder                    Blue color folder version
   ruby                     Red color folder version
   sun                      Yellow color folder version
