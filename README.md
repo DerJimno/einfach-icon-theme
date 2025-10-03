@@ -2,7 +2,7 @@
 
 einfach [ˈaɪn.faːx] → a German word that means **simple**
 
-A gtk dark simple icon theme
+A gtk simple dark icon theme
 
 Fork of [Vimix icon theme](https://github.com/vinceliuice/Vimix-icon-theme), which is based on [Paper-Icon-Theme](https://github.com/snwh/paper-icon-theme)
 
