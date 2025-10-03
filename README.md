@@ -1,8 +1,10 @@
-## Simple Icon Theme
+## Einfach Icon Theme
 
-A dark simple icon theme
+einfach [ˈaɪn.faːx] → a German word that means **simple**
 
-Fork of [Vimix icon theme](https://github.com/vinceliuice/Vimix-icon-theme), which is based on Paper-Icon-Theme: https://github.com/snwh/paper-icon-theme
+A gtk dark simple icon theme
+
+Fork of [Vimix icon theme](https://github.com/vinceliuice/Vimix-icon-theme), which is based on [Paper-Icon-Theme](https://github.com/snwh/paper-icon-theme)
 
 ## Install
 ```
