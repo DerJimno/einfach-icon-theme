@@ -91,7 +91,7 @@ function install_theme {
 }
 
 function clean_old_theme {
-  rm -rf "${DEST_DIR}"/simple{'-doder','-ruby','-sun'}
+  rm -rf "${DEST_DIR}"/einfach{'-doder','-ruby','-sun'}
 }
 
 while [[ $# -gt 0 ]]; do
@@ -120,7 +120,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Default name is ''
-: "${NAME:=simple}"
+: "${NAME:=einfach}"
 
 clean_old_theme
 
