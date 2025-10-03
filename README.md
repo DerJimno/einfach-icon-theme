@@ -11,13 +11,13 @@ Fork of [Vimix icon theme](https://github.com/vinceliuice/Vimix-icon-theme), whi
 Usage: ./install.sh [OPTIONS...] [COLOR VARIANTS...]
 
 OPTIONS:
-  -a                       Install all color folder versions
+  -a                       Install all color variants
   -d DIR                   Specify theme destination directory (Default: $HOME/.icons)
-  -n NAME                  Specify theme name (Default: simple)
+  -n VARIANT               Specify theme variant (Default: standard)
   -h                       Show this help
 
 COLOR VARIANTS:
-  standard                 Standard color folder version
+  standard                 Einfach color folder version
   doder                    Blue color folder version
   ruby                     Red color folder version
   sun                      Yellow color folder version
