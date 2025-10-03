@@ -1,132 +1,105 @@
 #!/bin/bash
-
 if [[ ${UID} -eq 0 ]]; then
   DEST_DIR="/usr/share/icons"
 else
   DEST_DIR="${HOME}/.icons"
 fi
 
-declare SRC_DIR
 SRC_DIR=$(cd "$(dirname "${0}")" && pwd)
-
 declare -r COLOR_VARIANTS=("standard" "doder" "ruby" "sun")
+colors=()
 
 function usage {
-  printf "%s\n" "Usage: $0 [OPTIONS...] [COLOR VARIANTS...]"
+  printf "%s\n" "Usage: $0 [OPTIONS]"
   printf "\n%s\n" "OPTIONS:"
-  printf "  %-25s%s\n" "-a" "Install all color folder versions"
-  printf "  %-25s%s\n" "-d DIR" "Specify theme destination directory (Default: ${DEST_DIR})"
-  printf "  %-25s%s\n" "-n NAME" "Specify theme name (Default: Vimix)"
+  printf "  %-25s%s\n" "-a" "Install all variants"
+  printf "  %-25s%s\n" "-d DIR" "Destination directory (Default: ${DEST_DIR})"
+  printf "  %-25s%s\n" "-n VARIANT" "Install variant by name (standard, doder, ruby, sun)"
   printf "  %-25s%s\n" "-h" "Show this help"
-  printf "\n%s\n" "COLOR VARIANTS:"
-  printf "  %-25s%s\n" "standard" "Standard color folder version"
-  printf "  %-25s%s\n" "doder" "Blue color folder version"
-  printf "  %-25s%s\n" "ruby" "Red color folder version"
-  printf "  %-25s%s\n" "sun" "Sun color folder version"
-  printf "\n  %s\n" "By default, only the standard one is selected."
+  printf "\n  %s\n" "Default installs base theme (einfach, standard)"
 }
 
 function install_theme {
-  case "$1" in
-    standard)
-      local -r theme_color='#fc9867'
-      ;;
-    doder)
-      local -r theme_color='#4285F4'
-      ;;
-    ruby)
-      local -r theme_color='#F0544C'
-      ;;
-    sun)
-      local -r theme_color='#adbf04'
-      ;;
+  local variant="$1"
+  case "$variant" in
+    standard) theme_color='#fc9867' ;;
+    doder)    theme_color='#4285F4' ;;
+    ruby)     theme_color='#F0544C' ;;
+    sun)      theme_color='#adbf04' ;;
+    *) echo "Unknown variant: $variant"; exit 1 ;;
   esac
 
-  # Appends a dash if the variables are not empty
-  if [[ "${1}" != "standard" ]]; then
-    local -r colorprefix="-${1}"
-  fi
+  [[ "$variant" != "standard" ]] && colorprefix="-$variant" || colorprefix=""
+  THEME_NAME="einfach${colorprefix}"
+  THEME_DIR="${DEST_DIR}/${THEME_NAME}"
 
-  local -r brightprefix="${2:+-$2}"
-
-  local -r THEME_NAME="${NAME}${colorprefix}${brightprefix}"
-  local -r THEME_DIR="${DEST_DIR}/${THEME_NAME}"
-
-  if [[ -d "${THEME_DIR}" ]]; then
-    rm -rf "${THEME_DIR}"
-  fi
+  [[ -d "$THEME_DIR" ]] && rm -rf "$THEME_DIR"
 
   echo "Installing '${THEME_NAME}'..."
+  install -d "$THEME_DIR"
+  install -m644 "${SRC_DIR}/src/index.theme" "$THEME_DIR"
+  sed -i "s/%NAME%/${THEME_NAME}/g" "$THEME_DIR/index.theme"
 
-  install -d "${THEME_DIR}"
+  cp -r "${SRC_DIR}"/src/{16,22,24,32,scalable,symbolic} "$THEME_DIR"
+  cp -r "${SRC_DIR}"/links/{16,22,24,32,scalable,symbolic} "$THEME_DIR"
 
-  install -m644 "${SRC_DIR}/src/index.theme" "${THEME_DIR}"
-
-  # Update the name in index.theme
-  sed -i "s/%NAME%/${THEME_NAME}/g" "${THEME_DIR}/index.theme"
-
-  if [[ -z "${brightprefix}" ]]; then
-    cp -r "${SRC_DIR}"/src/{16,22,24,32,scalable,symbolic} "${THEME_DIR}"
-    sed -i "s/#5294e2/$theme_color/g" "${THEME_DIR}"/16/places/*
-    cp -r "${SRC_DIR}"/links/{16,22,24,32,scalable,symbolic} "${THEME_DIR}"
-    if [[ -n "${colorprefix}" ]]; then
-      install -m644 "${SRC_DIR}"/src/colors/color"${colorprefix}"/*.svg "${THEME_DIR}/scalable/places"
-    fi
-
-    # Change icon color for dark theme
-    sed -i "s/#565656/#aaaaaa/g" "${THEME_DIR}"/{16,22,24}/actions/*
-    sed -i "s/#727272/#aaaaaa/g" "${THEME_DIR}"/{16,22,24}/{places,devices}/*
-    sed -i "s/#5294e2/$theme_color/g" "${THEME_DIR}"/16/places/*
-
+  if [[ -n "$colorprefix" ]]; then
+    install -m644 "${SRC_DIR}/src/colors/color-${variant}"/*.svg "$THEME_DIR/scalable/places"
   fi
 
-  ln -sr "${THEME_DIR}/16" "${THEME_DIR}/16@2x"
-  ln -sr "${THEME_DIR}/22" "${THEME_DIR}/22@2x"
-  ln -sr "${THEME_DIR}/24" "${THEME_DIR}/24@2x"
-  ln -sr "${THEME_DIR}/32" "${THEME_DIR}/32@2x"
-  ln -sr "${THEME_DIR}/scalable" "${THEME_DIR}/scalable@2x"
+  sed -i "s/#565656/#aaaaaa/g" "$THEME_DIR"/{16,22,24}/actions/*
+  sed -i "s/#727272/#aaaaaa/g" "$THEME_DIR"/{16,22,24}/{places,devices}/*
+  sed -i "s/#5294e2/$theme_color/g" "$THEME_DIR"/16/places/*
 
-  cp -r "${SRC_DIR}/src/cursors/dist${brightprefix}" "${THEME_DIR}/cursors"
-  gtk-update-icon-cache "${THEME_DIR}"
+  ln -sr "$THEME_DIR/16" "$THEME_DIR/16@2x"
+  ln -sr "$THEME_DIR/22" "$THEME_DIR/22@2x"
+  ln -sr "$THEME_DIR/24" "$THEME_DIR/24@2x"
+  ln -sr "$THEME_DIR/32" "$THEME_DIR/32@2x"
+  ln -sr "$THEME_DIR/scalable" "$THEME_DIR/scalable@2x"
+
+  cp -r "${SRC_DIR}/src/cursors/dist" "$THEME_DIR/cursors"
+  gtk-update-icon-cache "$THEME_DIR"
 }
 
 function clean_old_theme {
   rm -rf "${DEST_DIR}"/einfach{'-doder','-ruby','-sun'}
 }
 
+# Argument parsing
 while [[ $# -gt 0 ]]; do
-  if [[ "${1}" = "-a" ]]; then
-    colors=("${COLOR_VARIANTS[@]}")
-  elif [[ "${1}" = "-d" ]]; then
-    DEST_DIR="${2}"
-    shift 2
-  elif [[ "${1}" = "-n" ]]; then
-    NAME="${2}"
-    shift 2
-  elif [[ "${1}" = "-h" ]]; then
-    usage
-    exit 0
-  # If the argument is a color variant, append it to the colors to be installed
-  elif [[ " ${COLOR_VARIANTS[*]} " = *" ${1} "* ]] &&
-    [[ "${colors[*]}" != *${1}* ]]; then
-    colors+=("${1}")
-  else
-    echo "ERROR: Unrecognized installation option '${1}'."
-    echo "Try '$0 -h' for more information."
-    exit 1
-  fi
-
-  shift
+  case "$1" in
+    -a)
+      colors=("${COLOR_VARIANTS[@]}")
+      shift
+      ;;
+    -d)
+      DEST_DIR="$2"
+      shift 2
+      ;;
+    -n)
+      if [[ " ${COLOR_VARIANTS[*]} " == *" $2 "* ]]; then
+        colors+=("$2")
+      else
+        echo "Unknown variant: $2"
+        exit 1
+      fi
+      shift 2
+      ;;
+    -h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "ERROR: Unrecognized option '$1'"
+      exit 1
+      ;;
+  esac
 done
 
-# Default name is ''
-: "${NAME:=einfach}"
+: "${colors:=standard}"
 
 clean_old_theme
 
-# By default, only the standard color variant is selected
-for color in "${colors[@]:-standard}"; do
-    install_theme "${color}" "${bright}"
+for color in "${colors[@]}"; do
+  install_theme "$color"
 done
-
-# EOF
